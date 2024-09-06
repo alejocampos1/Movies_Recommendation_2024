@@ -1,7 +1,5 @@
 # Entorno Virtual
-/venv/
-/env/
-.env
+mlops_project
 
 # Archivos de caché
 __pycache__/

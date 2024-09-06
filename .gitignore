@@ -1,0 +1,18 @@
+# Entorno Virtual
+/venv/
+/env/
+.env
+
+# Archivos de caché
+__pycache__/
+*.pyc
+
+# Archivos de configuración de VSCode
+.vscode/
+
+# Archivos grandes
+Datasets/credits.csv
+Datasets/movies_dataset.csv
+
+#DS_Store
+.DS_Store

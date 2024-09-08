@@ -11,6 +11,9 @@ __pycache__/
 # Archivos grandes
 Datasets/credits.csv
 Datasets/movies_dataset.csv
+Datasets/Datasets_Limpios/csv/
 
 #DS_Store
 .DS_Store
+
+PLANTILLA.py

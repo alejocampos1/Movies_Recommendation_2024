@@ -237,22 +237,21 @@ def get_director(nombre_director: str) -> Dict[str, str]:
     # 2. Dataframe de películas
     df_peliculas_director = df_movies[df_movies['id'].isin(peliculas_director)][['title', 'release_date', 'budget', 'revenue']]
 
-    # Inicializar el diccionario con el mensaje base
+        # Inicializar el diccionario con el mensaje base
     output_dict = {
-    "mensaje": f"{nombre_original} ha conseguido un retorno total de {total_retorno:.2f}."
+        "mensaje": f"{nombre_original} ha conseguido un retorno total de {total_retorno:.2f}."
     }
 
-    # Crear una lista para almacenar los detalles de cada película
-    peliculas_mensaje = []
-
     # Iterar sobre las filas del DataFrame para agregar información de cada película
+    conteo = 1
     for index, row in df_peliculas_director.iterrows():
-    # Formatear el mensaje de cada película
-        pelicula_info = f"Película: {row['title']}, Fecha de lanzamiento: {row['release_date'].date()}, Costo: {row['budget']}, Ganancia: {row['revenue']}."
-        peliculas_mensaje.append(pelicula_info)
+        
+        # Formatear el mensaje de cada película
+        pelicula_info = f"Título: {row['title']}, Fecha de lanzamiento: {row['release_date'].date()}, Costo: {row['budget']}, Ganancia: {row['revenue']}."
+        
+        # Agregar la información de la película al diccionario con una clave única
+        output_dict[f'Película {conteo}'] = pelicula_info
+        conteo += 1
 
-    # Agregar los mensajes de las películas al diccionario
-    output_dict['lista_películas'] = peliculas_mensaje
-
-    # Devolver el mensaje con la información calculada
+    # Devolver el diccionario con la información calculada
     return output_dict

@@ -118,13 +118,27 @@ def cantidad_filmaciones_dia(dia: str) -> Dict[str, str]:
     # Devolver un mensaje con el número de películas estrenadas
     return {"mensaje": f"{cantidad_peliculas} películas fueron estrenadas un {dia}"}
 
-# Placeholder para devolver el score/popularidad de un título de película
+# Endpoint para obtener el año de estreno y el score de una película por su título
 @app.get("/score_titulo/{titulo}")
 def score_titulo(titulo: str) -> Dict[str, str]:
     """
-    Placeholder para devolver el score/popularidad de un título de película.
+    Devuelve el año de estreno y el score de una película por su título.
+    Normaliza el título ingresado y busca coincidencias en los datos.
     """
-    return {"mensaje": f"La película {titulo} fue estrenada en el año X con un score/popularidad de X"}
+    # Normalizar el título ingresado por el usuario
+    titulo_normalizado = normalizar_texto(titulo)
+    
+    # Filtrar las filas donde el título normalizado coincida
+    df_filtrado = df_movies[df_movies['title'].apply(normalizar_texto) == titulo_normalizado]
+    
+    # Obtener el título original
+    titulo_original = df_filtrado['title'].iloc[0]
+    
+    # Variables para mensaje final
+    estreno = df_filtrado['release_year'].iloc[0]
+    score = df_filtrado['popularity'].iloc[0]
+    
+    return {"mensaje": f"La película {titulo_original} fue estrenada en {estreno} con un score/popularidad de {score:.2f}"}
 
 # Endpoint para obtener la votación total y promedio de una película por su título
 @app.get("/votos_titulo/{titulo}")

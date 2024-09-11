@@ -121,15 +121,15 @@ def cantidad_filmaciones_dia(dia: str) -> Dict[str, str]:
 # Endpoint para obtener el año de estreno y el score de una película por su título
 @app.get("/score_titulo/{titulo}")
 def score_titulo(titulo: str) -> Dict[str, str]:
-    """
-    Devuelve el año de estreno y el score de una película por su título.
-    Normaliza el título ingresado y busca coincidencias en los datos.
-    """
-    # Normalizar el título ingresado por el usuario
+        # Normalizar el título ingresado por el usuario
     titulo_normalizado = normalizar_texto(titulo)
     
     # Filtrar las filas donde el título normalizado coincida
     df_filtrado = df_movies[df_movies['title'].apply(normalizar_texto) == titulo_normalizado]
+    
+    # Verificar si se encuentra el título en el dataset
+    if df_filtrado.empty:
+        return {"mensaje": "Por favor, ingrese un título de película válido."}
     
     # Obtener el título original
     titulo_original = df_filtrado['title'].iloc[0]

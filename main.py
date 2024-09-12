@@ -27,7 +27,6 @@ async def load_data_on_startup():
         # Diccionario que mapea los nombres de los DataFrames a sus respectivas URLs de archivos Parquet
         file_urls = {
             "df_cast": "https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/cast.parquet",
-            "df_collections": "https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/collections.parquet",
             "df_crew": "https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/crew.parquet",
             "df_genres": "https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/genres.parquet",
             "df_movies": "https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/movies.parquet",

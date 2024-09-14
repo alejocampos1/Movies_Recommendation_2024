@@ -21,17 +21,14 @@ async def load_data_on_startup():
     Se encarga de cargar los archivos Parquet en paralelo usando ThreadPoolExecutor.
     """
     # Declaramos las variables globales que almacenarán los DataFrames cargados
-    global df_cast, df_collections, df_crew, df_genres, df_movies, df_prodcompanies, df_prodcountries
+    global df_cast, df_crew, df_movies
 
     try:
         # Diccionario que mapea los nombres de los DataFrames a sus respectivas URLs de archivos Parquet
         file_urls = {
             "df_cast": "https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/cast.parquet",
             "df_crew": "https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/crew.parquet",
-            "df_genres": "https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/genres.parquet",
             "df_movies": "https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/movies.parquet",
-            "df_prodcompanies": "https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/prodcompanies.parquet",
-            "df_prodcountries": "https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/prodcountries.parquet"
         }
 
         # Usamos ThreadPoolExecutor para cargar varios archivos en paralelo, max_workers define el número de hilos
@@ -56,7 +53,8 @@ def normalizar_texto(texto: str) -> str:
     Normaliza el texto eliminando espacios en blanco y convirtiéndolo a minúsculas.
     Esto se usa para hacer comparaciones insensibles a mayúsculas y espacios.
     """
-    return ''.join(texto.split()).lower()
+    texto_normalizado = texto.replace('-', '').replace('.', '')
+    return ''.join(texto_normalizado.split()).lower()
 
 # Endpoint para obtener la cantidad de filmaciones en un mes específico
 @app.get("/cantidad_filmaciones_mes/{mes}")

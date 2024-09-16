@@ -1,25 +1,28 @@
 from fastapi import FastAPI
 import pandas as pd
 from typing import Dict
-from recomendador import recomendar_peliculas
+from sklearn.metrics.pairwise import cosine_similarity
 from contextlib import asynccontextmanager
-import joblib
 
 # Definir el manejador de ciclo de vida
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global df_cast, df_crew, df_movies, normalizar_texto, cosine_sim, df_premodel
+    global df_cast, df_crew, df_movies, df_model, cosine_sim, df_premodel, normalizar_texto
     try:
-        # Cargar el modelo de recomendación
-        cosine_sim, df_premodel = joblib.load('modelo_recomendacion.pkl')
-        print("Modelo de recomendación cargado exitosamente.")
-        
         # Cargar los archivos Parquet
+        df_model = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/matriz_features.parquet')
+        df_premodel = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/pre_modelo.parquet')
+        
+        # Calcular la similitud de coseno
+        cosine_sim = cosine_similarity(df_model)
+        print("Modelo de recomendación calculado exitosamente.")
+        
+        # Cargar otros archivos Parquet
         df_cast = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/cast.parquet')
         df_crew = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/crew.parquet')
         df_movies = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/movies.parquet')
         print("Archivos cargados exitosamente.")
-        
+
         # Definir la función normalizar_texto durante el startup
         def normalizar_texto(texto: str) -> str:
             """
@@ -31,7 +34,7 @@ async def lifespan(app: FastAPI):
 
         print("Función normalizar_texto cargada exitosamente.")
     except Exception as e:
-        print(f"Error cargando archivos, función o modelo: {e}")
+        print(f"Error cargando archivos o modelo: {e}")
     
     # Yield para continuar la ejecución de la aplicación
     yield
@@ -251,14 +254,25 @@ def get_director(nombre_director: str) -> Dict[str, str]:
     return output_dict
 
 @app.get("/recomendacion/{titulo}")
-def obtener_recomendaciones(titulo: str):
-    """
-    Endpoint para obtener recomendaciones de películas basadas en el título proporcionado.
-    """
-    try:
-        # Obtener las recomendaciones usando la función recomendar_peliculas
-        recomendaciones = recomendar_peliculas(titulo)
-        return {"titulo": titulo, "recomendaciones": recomendaciones}
-    except KeyError:
-        return {"mensaje": "Título no encontrado. Por favor, ingrese un título válido."}
+def recomendar_peliculas(titulo):
+    # Crear un índice basado en el título de la película
+    indices = pd.Series(df_premodel.index, index=df_premodel['title']).drop_duplicates()
+
+    # Obtener el índice de la película que coincide con el título
+    idx = indices[titulo]
+
+    # Obtener los puntajes de similitud
+    sim_scores = list(enumerate(cosine_sim[idx]))
+
+    # Ordenar las películas en base a la similitud
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+
+    # Seleccionar las 5 películas más similares
+    sim_scores = sim_scores[1:6]
+
+    # Obtener los índices de esas películas
+    movie_indices = [i[0] for i in sim_scores]
+
+    # Retornar los títulos de las películas más similares
+    return df_premodel['title'].iloc[movie_indices]
     

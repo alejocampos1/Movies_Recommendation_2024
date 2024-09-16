@@ -246,7 +246,13 @@ def get_director(nombre_director: str) -> Dict[str, str]:
 
 @app.get("/recomendacion/{titulo}")
 def obtener_recomendaciones(titulo: str):
-    recomendaciones = recomendar_peliculas(titulo)
-    return {"titulo": titulo, "recomendaciones": recomendaciones}
-
+    """
+    Endpoint para obtener recomendaciones de películas basadas en el título proporcionado.
+    """
+    try:
+        # Obtener las recomendaciones usando la función recomendar_peliculas
+        recomendaciones = recomendar_peliculas(titulo)
+        return {"titulo": titulo, "recomendaciones": recomendaciones}
+    except KeyError:
+        return {"mensaje": "Título no encontrado. Por favor, ingrese un título válido."}
     

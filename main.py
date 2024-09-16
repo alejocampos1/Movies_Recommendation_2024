@@ -18,9 +18,9 @@ def load_parquet_file(file_url):
 async def load_data_on_startup():
     global df_cast, df_crew, df_movies
     try:
-        df_cast = pd.read_parquet("./Datasets/Datasets_Limpios/Parquet/cast.parquet")
-        df_crew = pd.read_parquet("./Datasets/Datasets_Limpios/Parquet/crew.parquet")
-        df_movies = pd.read_parquet("./Datasets/Datasets_Limpios/Parquet/movies.parquet")
+        df_cast = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/cast.parquet')
+        df_crew = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/crew.parquet')
+        df_movies = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/movies.parquet')
     except Exception as e:
         print(f"Error cargando archivos: {e}")
 

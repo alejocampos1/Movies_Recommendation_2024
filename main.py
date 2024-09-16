@@ -30,11 +30,8 @@ async def lifespan(app: FastAPI):
     
     # Yield para continuar la ejecución de la aplicación
     yield
-    
-    # Lógica opcional para liberar recursos al finalizar la aplicación
     print("La aplicación se está cerrando.")
 
-# Inicializar la aplicación con el manejador de ciclo de vida
 app = FastAPI(lifespan=lifespan)
 
 # Endpoint para obtener la cantidad de filmaciones en un mes específico

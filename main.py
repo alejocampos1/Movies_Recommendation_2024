@@ -273,8 +273,8 @@ def recomendar_peliculas(titulo: str):
     # Traer el título original usando el índice calculado
     nombre_original = df_premodel['title'].iloc[idx]
 
-    # Obtener los puntajes de similitud (asegurarse de que sea un array 1D)
-    sim_scores = list(enumerate(cosine_sim[idx].flatten()))
+    # Obtener los puntajes de similitud
+    sim_scores = list(enumerate(cosine_sim[idx]))
 
     # Ordenar las películas en base a la similitud
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
@@ -293,6 +293,8 @@ def recomendar_peliculas(titulo: str):
         "titulo": nombre_original,
         "recomendaciones": recomendaciones
     }
+
+
 
 
     

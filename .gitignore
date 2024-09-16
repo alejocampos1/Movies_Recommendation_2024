@@ -22,3 +22,8 @@ testing_funciones.ipynb
 RESPALDOS/
 
 /venv
+
+Datasets/Datasets_Limpios/Parquet/collections.parquet
+Datasets/Datasets_Limpios/Parquet/prodcompanies.parquet
+Datasets/Datasets_Limpios/Parquet/prodcountries.parquet
+Datasets/Datasets_Limpios/Parquet/genres.parquet

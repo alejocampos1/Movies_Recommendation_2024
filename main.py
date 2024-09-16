@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 import pandas as pd
 from typing import Dict
-from recomendador import recomendar_peliculas
 
 app = FastAPI()
 
@@ -248,10 +247,5 @@ def get_director(nombre_director: str) -> Dict[str, str]:
 
     # Devolver el diccionario con la información calculada
     return output_dict
-
-@app.get("/recomendacion/{titulo}")
-def obtener_recomendaciones(titulo: str):
-    recomendaciones = recomendar_peliculas(titulo)
-    return {"titulo": titulo, "recomendaciones": recomendaciones}
 
     

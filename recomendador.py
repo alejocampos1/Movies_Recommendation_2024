@@ -10,6 +10,7 @@ cosine_sim = cosine_similarity(df_model)
 
 # Función de recomendación
 def recomendar_peliculas(titulo, cosine_sim=cosine_sim):
+    
     # Crear un índice basado en el título de la película
     indices = pd.Series(df_premodel.index, index=df_premodel['title']).drop_duplicates()
 

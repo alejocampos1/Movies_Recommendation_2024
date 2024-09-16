@@ -3,8 +3,8 @@
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 
-df_model = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/matriz_features.parquet')
-df_premodel = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/pre_modelo.parquet')
+df_model = pd.read_parquet('/Datasets/matriz_features.parquet')
+df_premodel = pd.read_parquet('/Datasets/pre_modelo.parquet')
 
 cosine_sim = cosine_similarity(df_model)
 

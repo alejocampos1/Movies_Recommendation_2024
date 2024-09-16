@@ -16,16 +16,13 @@ def load_parquet_file(file_url):
 # Evento que se ejecuta al iniciar la API
 @app.on_event("startup")
 async def load_data_on_startup():
-    global df_cast, df_crew, df_movies  # Declaramos las variables globales para su uso dentro de la función
-    
-    """
-    Evento startup de FastAPI que se ejecuta al iniciar la aplicación.
-    Se encarga de cargar los archivos Parquet en paralelo usando ThreadPoolExecutor.
-    """
-    # Declaramos las variables globales que almacenarán los DataFrames cargados
-    df_cast = pd.read_parquet("./Datasets/Datasets_Limpios/Parquet/cast.parquet")
-    df_crew = pd.read_parquet("./Datasets/Datasets_Limpios/Parquet/crew.parquet")
-    df_movies = pd.read_parquet("./Datasets/Datasets_Limpios/Parquet/movies.parquet")
+    global df_cast, df_crew, df_movies
+    try:
+        df_cast = pd.read_parquet("./Datasets/Datasets_Limpios/Parquet/cast.parquet")
+        df_crew = pd.read_parquet("./Datasets/Datasets_Limpios/Parquet/crew.parquet")
+        df_movies = pd.read_parquet("./Datasets/Datasets_Limpios/Parquet/movies.parquet")
+    except Exception as e:
+        print(f"Error cargando archivos: {e}")
 
 # Función para normalizar texto eliminando espacios y convirtiendo a minúsculas
 def normalizar_texto(texto: str) -> str:

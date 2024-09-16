@@ -9,9 +9,12 @@ __pycache__/
 .vscode/
 
 # Archivos grandes
-Datasets/credits.csv
-Datasets/movies_dataset.csv
-Datasets/Datasets_Limpios/csv/
+/Datasets/credits.csv
+/Datasets/movies_dataset.csv
+/Datasets/Datasets_Limpios/csv/
+/Datasets/MateriaPrima/
+/Datasets/Datasets_Limpios/Parquet/
+
 
 #DS_Store
 .DS_Store
@@ -22,3 +25,5 @@ testing_funciones.ipynb
 RESPALDOS/
 
 /venv
+
+memoria.py

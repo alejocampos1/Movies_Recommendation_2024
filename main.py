@@ -7,27 +7,35 @@ from contextlib import asynccontextmanager
 # Definir el manejador de ciclo de vida
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global df_cast, df_crew, df_movies
+    global df_cast, df_crew, df_movies, normalizar_texto
     try:
+        # Cargar los archivos Parquet
         df_cast = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/cast.parquet')
         df_crew = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/crew.parquet')
         df_movies = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/movies.parquet')
         print("Archivos cargados exitosamente.")
+        
+        # Definir la función normalizar_texto durante el startup
+        def normalizar_texto(texto: str) -> str:
+            """
+            Normaliza el texto eliminando espacios en blanco y convirtiéndolo a minúsculas.
+            Esto se usa para hacer comparaciones insensibles a mayúsculas y espacios.
+            """
+            texto_normalizado = texto.replace('-', '').replace('.', '')
+            return ''.join(texto_normalizado.split()).lower()
+
+        print("Función normalizar_texto cargada exitosamente.")
     except Exception as e:
-        print(f"Error cargando archivos: {e}")
+        print(f"Error cargando archivos o función: {e}")
+    
+    # Yield para continuar la ejecución de la aplicación
+    yield
+    
+    # Lógica opcional para liberar recursos al finalizar la aplicación
+    print("La aplicación se está cerrando.")
 
 # Inicializar la aplicación con el manejador de ciclo de vida
 app = FastAPI(lifespan=lifespan)
-
-
-# Función para normalizar texto eliminando espacios y convirtiendo a minúsculas
-def normalizar_texto(texto: str) -> str:
-    """
-    Normaliza el texto eliminando espacios en blanco y convirtiéndolo a minúsculas.
-    Esto se usa para hacer comparaciones insensibles a mayúsculas y espacios.
-    """
-    texto_normalizado = texto.replace('-', '').replace('.', '')
-    return ''.join(texto_normalizado.split()).lower()
 
 # Endpoint para obtener la cantidad de filmaciones en un mes específico
 @app.get("/cantidad_filmaciones_mes/{mes}")

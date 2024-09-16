@@ -281,7 +281,12 @@ def recomendar_peliculas(titulo):
     # Obtener los índices de esas películas
     movie_indices = [i[0] for i in sim_scores]
 
-    # Retornar los títulos de las películas más similares
-    return df_premodel['title'].iloc[movie_indices].tolist()
+    # Obtener los títulos de las películas más similares
+    recomendaciones = df_premodel['title'].iloc[movie_indices].tolist()
+
+    # Formatear la salida para incluir el título y la lista de recomendaciones
+    resultado = f"Recomendaciones para '{titulo}':\n" + "\n".join(recomendaciones)
+    
+    return resultado
 
     

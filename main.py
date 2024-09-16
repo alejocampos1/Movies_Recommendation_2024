@@ -285,8 +285,9 @@ def recomendar_peliculas(titulo):
     recomendaciones = df_premodel['title'].iloc[movie_indices].tolist()
 
     # Formatear la salida para incluir el título y la lista de recomendaciones
-    resultado = f"Recomendaciones para '{titulo}':\n" + "\n".join(recomendaciones)
-    
-    return resultado
+    return {
+        "titulo": titulo,
+        "recomendaciones": recomendaciones
+    }
 
     

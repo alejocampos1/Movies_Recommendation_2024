@@ -23,9 +23,9 @@ async def load_data_on_startup():
     Se encarga de cargar los archivos Parquet en paralelo usando ThreadPoolExecutor.
     """
     # Declaramos las variables globales que almacenarán los DataFrames cargados
-    df_cast = pd.read_parquet("https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/cast.parquet")
-    df_crew = pd.read_parquet("https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/crew.parquet")
-    df_movies = pd.read_parquet("https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/movies.parquet")
+    df_cast = pd.read_parquet("./Datasets/Datasets_Limpios/Parquet/cast.parquet")
+    df_crew = pd.read_parquet("./Datasets/Datasets_Limpios/Parquet/crew.parquet")
+    df_movies = pd.read_parquet("./Datasets/Datasets_Limpios/Parquet/movies.parquet")
 
     print("Todos los archivos se han cargado correctamente.")
 

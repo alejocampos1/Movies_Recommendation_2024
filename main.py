@@ -1,9 +1,7 @@
 from fastapi import FastAPI
 import pandas as pd
 from typing import Dict
-from concurrent.futures import ThreadPoolExecutor
 from recomendador import recomendar_peliculas
-
 
 app = FastAPI()
 
@@ -18,36 +16,18 @@ def load_parquet_file(file_url):
 # Evento que se ejecuta al iniciar la API
 @app.on_event("startup")
 async def load_data_on_startup():
+    global df_cast, df_crew, df_movies  # Declaramos las variables globales para su uso dentro de la función
+    
     """
     Evento startup de FastAPI que se ejecuta al iniciar la aplicación.
     Se encarga de cargar los archivos Parquet en paralelo usando ThreadPoolExecutor.
     """
     # Declaramos las variables globales que almacenarán los DataFrames cargados
-    global df_cast, df_crew, df_movies
+    df_cast = pd.read_parquet("https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/cast.parquet")
+    df_crew = pd.read_parquet("https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/crew.parquet")
+    df_movies = pd.read_parquet("https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/movies.parquet")
 
-    try:
-        # Diccionario que mapea los nombres de los DataFrames a sus respectivas URLs de archivos Parquet
-        file_urls = {
-            "df_cast": "https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/cast.parquet",
-            "df_crew": "https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/crew.parquet",
-            "df_movies": "https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/movies.parquet",
-        }
-
-        # Usamos ThreadPoolExecutor para cargar varios archivos en paralelo, max_workers define el número de hilos
-        with ThreadPoolExecutor(max_workers=8) as executor:
-            # Mapea cada URL de archivo a su nombre de DataFrame usando un diccionario de futures
-            future_to_df = {executor.submit(load_parquet_file, url): df_name for df_name, url in file_urls.items()}
-
-            # Asignamos cada DataFrame cargado a su respectiva variable global una vez que los archivos se cargan
-            for future in future_to_df:
-                df_name = future_to_df[future]
-                globals()[df_name] = future.result()
-
-        print("Todos los archivos se han cargado correctamente.")
-
-    except Exception as e:
-        # Manejo de excepciones en caso de error al cargar los archivos Parquet
-        print(f"Error al cargar los archivos Parquet: {str(e)}")
+    print("Todos los archivos se han cargado correctamente.")
 
 # Función para normalizar texto eliminando espacios y convirtiendo a minúsculas
 def normalizar_texto(texto: str) -> str:

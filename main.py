@@ -255,11 +255,19 @@ def get_director(nombre_director: str) -> Dict[str, str]:
 
 @app.get("/recomendacion/{titulo}")
 def recomendar_peliculas(titulo):
-    # Crear un índice basado en el título de la película
-    indices = pd.Series(df_premodel.index, index=df_premodel['title']).drop_duplicates()
+    # Normalizar el título ingresado por el usuario
+    titulo_normalizado = normalizar_texto(titulo)
+    
+    # Crear un índice basado en el título normalizado de la película
+    indices = pd.Series(df_premodel.index, index=df_premodel['title'].apply(normalizar_texto)).drop_duplicates()
+
+    # Verificar si el título existe en los datos
+    if titulo_normalizado not in indices:
+        # Si no existe, retornar un mensaje de error o una lista vacía
+        return f"Título '{titulo}' no encontrado. Por favor, ingrese un título válido."
 
     # Obtener el índice de la película que coincide con el título
-    idx = indices[titulo]
+    idx = indices[titulo_normalizado]
 
     # Obtener los puntajes de similitud
     sim_scores = list(enumerate(cosine_sim[idx]))
@@ -274,5 +282,6 @@ def recomendar_peliculas(titulo):
     movie_indices = [i[0] for i in sim_scores]
 
     # Retornar los títulos de las películas más similares
-    return df_premodel['title'].iloc[movie_indices]
+    return df_premodel['title'].iloc[movie_indices].tolist()
+
     

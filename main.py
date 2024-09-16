@@ -27,8 +27,6 @@ async def load_data_on_startup():
     df_crew = pd.read_parquet("./Datasets/Datasets_Limpios/Parquet/crew.parquet")
     df_movies = pd.read_parquet("./Datasets/Datasets_Limpios/Parquet/movies.parquet")
 
-    print("Todos los archivos se han cargado correctamente.")
-
 # Función para normalizar texto eliminando espacios y convirtiendo a minúsculas
 def normalizar_texto(texto: str) -> str:
     """

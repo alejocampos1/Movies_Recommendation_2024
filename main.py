@@ -3,12 +3,17 @@ import pandas as pd
 from typing import Dict
 from recomendador import recomendar_peliculas
 from contextlib import asynccontextmanager
+import joblib
 
 # Definir el manejador de ciclo de vida
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global df_cast, df_crew, df_movies, normalizar_texto
+    global df_cast, df_crew, df_movies, normalizar_texto, cosine_sim, df_premodel
     try:
+        # Cargar el modelo de recomendación
+        cosine_sim, df_premodel = joblib.load('modelo_recomendacion.pkl')
+        print("Modelo de recomendación cargado exitosamente.")
+        
         # Cargar los archivos Parquet
         df_cast = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/cast.parquet')
         df_crew = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/crew.parquet')
@@ -26,7 +31,7 @@ async def lifespan(app: FastAPI):
 
         print("Función normalizar_texto cargada exitosamente.")
     except Exception as e:
-        print(f"Error cargando archivos o función: {e}")
+        print(f"Error cargando archivos, función o modelo: {e}")
     
     # Yield para continuar la ejecución de la aplicación
     yield

@@ -12,18 +12,9 @@ df_premodel = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejand
 cosine_sim = cosine_similarity(df_model)
 
 # Guardar el modelo de similitud coseno en un archivo .pkl
-joblib.dump((cosine_sim, df_premodel), 'modelo_recomendacion.pkl', compress=6)
+joblib.dump((cosine_sim, df_premodel), 'modelo_recomendacion.pkl', compress=8)
 
-# Función para cargar el modelo desde el archivo .pkl
-def cargar_modelo():
-    return joblib.load('modelo_recomendacion.pkl')
-
-# Función de recomendación
-def recomendar_peliculas(titulo, cosine_sim=None):
-    # Cargar el modelo si no está proporcionado
-    if cosine_sim is None:
-        cosine_sim, df_premodel = cargar_modelo()
-
+def recomendar_peliculas(titulo):
     # Crear un índice basado en el título de la película
     indices = pd.Series(df_premodel.index, index=df_premodel['title']).drop_duplicates()
 

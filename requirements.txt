@@ -4,13 +4,10 @@ appnope==0.1.4
 asttokens==2.4.1
 click==8.1.7
 comm==0.2.2
-cramjam==2.8.3
 debugpy==1.8.5
 decorator==5.1.1
 executing==2.1.0
 fastapi==0.114.2
-fastparquet==2024.5.0
-fsspec==2024.9.0
 h11==0.14.0
 idna==3.10
 ipykernel==6.29.5

@@ -254,7 +254,6 @@ def get_director(nombre_director: str) -> Dict[str, str]:
     return output_dict
 
 @app.get("/recomendacion/{titulo}")
-@app.get("/recomendacion/{titulo}")
 def recomendar_peliculas(titulo: str):
     # Normalizar el título ingresado por el usuario
     titulo_normalizado = normalizar_texto(titulo)
@@ -264,7 +263,6 @@ def recomendar_peliculas(titulo: str):
 
     # Verificar si el título existe en los datos
     if titulo_normalizado not in indices:
-        # Si no existe, retornar un mensaje de error en formato JSON
         return {"mensaje": f"Título '{titulo}' no encontrado. Por favor, ingrese un título válido."}
 
     # Obtener el índice de la película que coincide con el título normalizado
@@ -273,8 +271,8 @@ def recomendar_peliculas(titulo: str):
     # Traer el título original usando el índice calculado
     nombre_original = df_premodel['title'].iloc[idx]
 
-    # Obtener los puntajes de similitud
-    sim_scores = list(enumerate(cosine_sim[idx]))
+    # Obtener los puntajes de similitud (asegurar que sea un array 1D)
+    sim_scores = list(enumerate(cosine_sim[idx].flatten()))
 
     # Ordenar las películas en base a la similitud
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
@@ -285,16 +283,14 @@ def recomendar_peliculas(titulo: str):
     # Obtener los índices de esas películas
     movie_indices = [i[0] for i in sim_scores]
 
+    # Asegurarse de que los índices estén dentro de los límites del DataFrame
+    valid_movie_indices = [i for i in movie_indices if i < len(df_premodel)]
+
     # Obtener los títulos de las películas más similares
-    recomendaciones = df_premodel['title'].iloc[movie_indices].tolist()
+    recomendaciones = df_premodel['title'].iloc[valid_movie_indices].tolist()
 
     # Retornar la respuesta formateada en JSON con el título original y la lista de recomendaciones
     return {
         "titulo": nombre_original,
         "recomendaciones": recomendaciones
     }
-
-
-
-
-    

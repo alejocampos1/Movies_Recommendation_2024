@@ -2,27 +2,23 @@ from fastapi import FastAPI
 import pandas as pd
 from typing import Dict
 from recomendador import recomendar_peliculas
+from contextlib import asynccontextmanager
 
-app = FastAPI()
-
-# Función para cargar archivos Parquet desde una URL
-def load_parquet_file(file_url):
-    """
-    Función para cargar un archivo Parquet.
-    Recibe la URL de un archivo Parquet y devuelve el DataFrame correspondiente.
-    """
-    return pd.read_parquet(file_url)
-
-# Evento que se ejecuta al iniciar la API
-@app.on_event("startup")
-async def load_data_on_startup():
+# Definir el manejador de ciclo de vida
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     global df_cast, df_crew, df_movies
     try:
         df_cast = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/cast.parquet')
         df_crew = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/crew.parquet')
         df_movies = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/Datasets_Limpios/Parquet/movies.parquet')
+        print("Archivos cargados exitosamente.")
     except Exception as e:
         print(f"Error cargando archivos: {e}")
+
+# Inicializar la aplicación con el manejador de ciclo de vida
+app = FastAPI(lifespan=lifespan)
+
 
 # Función para normalizar texto eliminando espacios y convirtiendo a minúsculas
 def normalizar_texto(texto: str) -> str:

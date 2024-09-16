@@ -48,6 +48,12 @@ def cantidad_filmaciones_mes(mes: str) -> Dict[str, str]:
     """
     Devuelve la cantidad de filmaciones realizadas en un mes específico.
     Convierte el mes proporcionado en texto a su número correspondiente y cuenta las películas estrenadas ese mes.
+
+    Args:
+        mes (str): El nombre del mes en español (ej. 'enero', 'febrero').
+
+    Returns:
+        Dict[str, str]: Un mensaje con la cantidad de películas estrenadas en el mes proporcionado.
     """
     # Diccionario que mapea los nombres de los meses a sus números correspondientes
     meses = {
@@ -75,6 +81,12 @@ def cantidad_filmaciones_dia(dia: str) -> Dict[str, str]:
     """
     Devuelve la cantidad de filmaciones realizadas en un día específico de la semana.
     Convierte el día proporcionado en texto a su número correspondiente (0 para lunes, 6 para domingo).
+
+    Args:
+        dia (str): El nombre del día de la semana en español (ej. 'lunes', 'martes').
+
+    Returns:
+        Dict[str, str]: Un mensaje con la cantidad de películas estrenadas en el día proporcionado.
     """
     # Diccionario que mapea los días de la semana a sus números correspondientes (0 = lunes, 6 = domingo)
     dias_semana = {
@@ -104,6 +116,15 @@ def cantidad_filmaciones_dia(dia: str) -> Dict[str, str]:
 # Endpoint para obtener el año de estreno y el score de una película por su título
 @app.get("/score_titulo/{titulo}")
 def score_titulo(titulo: str) -> Dict[str, str]:
+    """
+    Devuelve el año de estreno y el puntaje de popularidad de una película por su título.
+
+    Args:
+        titulo (str): El título de la película.
+
+    Returns:
+        Dict[str, str]: Un mensaje con el año de estreno y el puntaje de popularidad de la película.
+    """
         # Normalizar el título ingresado por el usuario
     titulo_normalizado = normalizar_texto(titulo)
     
@@ -127,8 +148,13 @@ def score_titulo(titulo: str) -> Dict[str, str]:
 @app.get("/votos_titulo/{titulo}")
 def votos_titulo(titulo: str) -> Dict[str, str]:
     """
-    Devuelve la cantidad de votos y el promedio de votos de una película por su título.
-    Normaliza el título ingresado y busca coincidencias en los datos.
+    Devuelve la cantidad total de votos y el promedio de votos de una película por su título.
+
+    Args:
+        titulo (str): El título de la película.
+
+    Returns:
+        Dict[str, str]: Un mensaje con el número total de votos y el promedio de votaciones de la película.
     """
     # Normalizamos el título ingresado por el usuario
     titulo_normalizado = normalizar_texto(titulo)
@@ -157,6 +183,12 @@ def votos_titulo(titulo: str) -> Dict[str, str]:
 def get_actor(nombre_actor: str) -> Dict[str, str]:
     """
     Devuelve información sobre un actor: cuántas películas ha hecho y el retorno de esas películas.
+
+    Args:
+        nombre_actor (str): El nombre del actor.
+
+    Returns:
+        Dict[str, str]: Un mensaje con el número de películas y el retorno total y promedio de las películas en las que participó.
     """
     # Normalizar el nombre del actor
     nombre_normalizado = normalizar_texto(nombre_actor)
@@ -197,8 +229,13 @@ def get_actor(nombre_actor: str) -> Dict[str, str]:
 @app.get("/get_director/{nombre_director}")
 def get_director(nombre_director: str) -> Dict[str, str]:
     """
-    Devuelve información sobre un director: retorno total de sus películas y detalles de cada una. (Fecha de lanzamiento, 
-    retorno individual, costo y ganancia.)
+    Devuelve información sobre un director: retorno total de sus películas y detalles de cada una.
+
+    Args:
+        nombre_director (str): El nombre del director.
+
+    Returns:
+        Dict[str, str]: Un mensaje con el retorno total de las películas y detalles de cada una.
     """
     # Normalizar el nombre ingresado por el usuario
     nombre_normalizado = normalizar_texto(nombre_director)
@@ -255,6 +292,15 @@ def get_director(nombre_director: str) -> Dict[str, str]:
 
 @app.get("/recomendacion/{titulo}")
 def recomendar_peliculas(titulo: str):
+    """
+    Devuelve una lista de películas recomendadas basadas en un título dado utilizando similitud de coseno.
+
+    Args:
+        titulo (str): El título de la película.
+
+    Returns:
+        Dict[str, list]: Un mensaje con el título original y una lista de películas recomendadas.
+    """
     # Normalizar el título ingresado por el usuario
     titulo_normalizado = normalizar_texto(titulo)
     
@@ -274,7 +320,7 @@ def recomendar_peliculas(titulo: str):
     # Obtener los puntajes de similitud (asegurar que sea un array 1D)
     sim_scores = list(enumerate(cosine_sim[idx].flatten()))
 
-    # Ordenar las películas en base a la similitud
+    # Ordenar las películas con base en la similitud
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
 
     # Seleccionar las 5 películas más similares

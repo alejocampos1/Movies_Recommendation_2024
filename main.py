@@ -73,7 +73,7 @@ def cantidad_filmaciones_mes(mes: str) -> Dict[str, str]:
     cantidad_peliculas = df_movies[df_movies['release_date'].dt.month == numero_mes]['release_date'].count()
 
     # Devolver un mensaje con el número de películas estrenadas
-    return {"mensaje": f"{cantidad_peliculas} cantidad de películas fueron estrenadas en el mes de {mes}"}
+    return {"mensaje": f"{cantidad_peliculas} películas fueron estrenadas en el mes de {mes}"}
 
 # Endpoint para obtener la cantidad de filmaciones en un día específico de la semana
 @app.get("/cantidad_filmaciones_dia/{dia}")

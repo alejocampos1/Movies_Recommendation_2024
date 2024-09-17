@@ -1,8 +1,6 @@
 # recomendador.py
-
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
-import joblib
 
 # Cargar datos de las películas y las características
 df_model = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejandro-Campos/raw/main/Datasets/matriz_features.parquet')
@@ -10,9 +8,6 @@ df_premodel = pd.read_parquet('https://github.com/alejocampos1/Henry_PI1_Alejand
 
 # Calcular la similitud de coseno
 cosine_sim = cosine_similarity(df_model)
-
-# Guardar el modelo de similitud coseno en un archivo .pkl
-joblib.dump((cosine_sim, df_premodel), 'modelo_recomendacion.pkl', compress=9)
 
 def recomendar_peliculas(titulo):
     # Crear un índice basado en el título de la película

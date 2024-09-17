@@ -92,6 +92,7 @@ def cantidad_filmaciones_dia(dia: str) -> Dict[str, str]:
     dias_semana = {
         "lunes": 0,
         "martes": 1,
+        "miercoles": 2,
         "miércoles": 2,
         "jueves": 3,
         "viernes": 4,

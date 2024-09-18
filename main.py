@@ -1,3 +1,4 @@
+# Importar librerías
 from fastapi import FastAPI
 import pandas as pd
 from typing import Dict

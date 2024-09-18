@@ -16,12 +16,7 @@ idna
 ipykernel
 ipython
 jedi
-joblib
-jupyter_client
-jupyter_core
 kiwisolver
-matplotlib
-matplotlib-inline
 nest-asyncio
 numpy
 packaging
@@ -44,7 +39,6 @@ pytz
 pyzmq
 scikit-learn
 scipy
-seaborn
 six
 sniffio
 stack-data
@@ -56,4 +50,3 @@ typing_extensions
 tzdata
 uvicorn
 wcwidth
-wordcloud
